@@ -1,4 +1,5 @@
 import  { useState, useEffect } from 'react';
+import EmployeeList from './components/EmployeeList';
 
 
 type Employee = {
@@ -6,6 +7,8 @@ type Employee = {
   firstName: string;
   lastName: string;
   project: string;
+  city: string;
+  isActive: boolean
 };
 
 const App = () => {
@@ -30,18 +33,8 @@ const App = () => {
 
   return (
     <div>
-   <h1 className="text-3xl font-bold underline">
-    Employee List
-    </h1>
-      <ul>
-        {employees.map(employee => (
-          <li key={employee.id}>
-            <strong>First Name:</strong> {employee.firstName} <br />
-            <strong>Last Name:</strong> {employee.lastName} <br />
-            <strong>Project:</strong> {employee.project}
-          </li>
-        ))}
-      </ul>
+  
+    <EmployeeList employeeList={employees} />
     </div>
   );
 };
