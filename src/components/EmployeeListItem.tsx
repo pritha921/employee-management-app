@@ -16,14 +16,27 @@ const EmployeeListItem = ({ firstName, lastName, project, city, isActive }: Empl
         </div>
       </div>
       <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
-        <p className="text-sm leading-6 text-gray-900">{project}</p>
-      </div>
-      <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
         <p className="text-sm leading-6 text-gray-900">{city}</p>
       </div>
       <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
         <p className="text-sm leading-6 text-gray-900">{isActive}</p>
       </div>
+      <div className="hidden shrink-0 sm:flex sm:flex-col sm:items-end">
+            <p className="text-sm leading-6 text-gray-900">{isActive}</p>
+            {isActive ? (
+              <p className="mt-1 text-xs leading-5 text-gray-500">
+                Inactive
+              </p>
+            ) : (
+              <div className="mt-1 flex items-center gap-x-1.5">
+                <div className="flex-none rounded-full bg-emerald-500/20 p-1">
+                  <div className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                </div>
+                <p className="text-xs leading-5 text-gray-500">Active</p>
+              </div>
+            )}
+          </div>
+  
     </li>
   );
 };

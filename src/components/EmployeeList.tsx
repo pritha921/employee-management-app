@@ -13,7 +13,7 @@ const EmployeeList = ({ employeeList }: ExpenseListProps) => {
         {employeeList.map((employee) => (
           <EmployeeListItem
             key={employee.id}
-            firstName={employee.firstName}
+            firstName={employee.firstName}    
             lastName={employee.lastName}
             project={employee.project}
             city={employee.city}
