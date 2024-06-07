@@ -12,13 +12,11 @@ interface EmployeeListItemProps {
 
 const EmployeeListItem = ({ id, firstName, lastName, project, city, isActive, onToggleActive }: EmployeeListItemProps) => {
   return (
-    <li className="flex justify-between gap-x-6 py-5">
-      <div className="flex min-w-0 gap-x-4">
-        <div className="min-w-0 flex-auto">
-          <p className="text-sm font-semibold leading-6 text-gray-900">{`${firstName} ${lastName}`}</p>
-          <p className="mt-1 truncate text-xs leading-5 text-gray-500">{project}</p>
-          <p className="mt-1 truncate text-xs leading-5 text-gray-500">{city}</p>
-        </div>
+    <li className="flex justify-between items-center p-4 bg-white shadow rounded-lg mb-4">
+      <div className="flex flex-col">
+        <p className="text-lg font-semibold text-gray-900">{`${firstName} ${lastName}`}</p>
+        <p className="text-sm text-gray-500">{project}</p>
+        <p className="text-sm text-gray-500">{city}</p>
       </div>
       <div className="flex items-center">
         <Switch
@@ -40,4 +38,3 @@ const EmployeeListItem = ({ id, firstName, lastName, project, city, isActive, on
 };
 
 export default EmployeeListItem;
-

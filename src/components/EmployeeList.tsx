@@ -8,9 +8,9 @@ interface ExpenseListProps {
 
 const EmployeeList = ({ employeeList, onToggleActive }: ExpenseListProps) => {
   return (
-    <div>
-      <h2 className="text-xl font-bold mb-4">Employee List</h2>
-      <ul role="list" className="divide-y divide-gray-100">
+    <div className="p-4">
+      <h2 className="text-2xl font-bold mb-6">Employee List</h2>
+      <ul role="list" className="space-y-4">
         {employeeList.map((employee) => (
           <EmployeeListItem
             key={employee.id}
@@ -29,6 +29,7 @@ const EmployeeList = ({ employeeList, onToggleActive }: ExpenseListProps) => {
 };
 
 export default EmployeeList;
+
 
 
 
