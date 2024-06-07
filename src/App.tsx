@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import EmployeeList from './components/EmployeeList';
 import EmployeeListModel from './models/EmployeeListModel';
 import Navbar from './components/Navbar';
-import Loader from './components/Loader'
+import Loader from './components/Loader';
 
 const App = () => {
   const [employees, setEmployees] = useState<EmployeeListModel[]>([]);
@@ -22,12 +22,20 @@ const App = () => {
         setLoading(false);
       } catch (error) {
         console.error('Error fetching the employees data', error);
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchEmployees();
   }, []);
+
+  const handleToggleActive = (id: string, isActive: boolean) => {
+    setEmployees((prevEmployees) =>
+      prevEmployees.map((employee) =>
+        employee.id === id ? { ...employee, isActive } : employee
+      )
+    );
+  };
 
   return (
     <div>
@@ -35,7 +43,7 @@ const App = () => {
       {loading ? (
         <Loader />
       ) : (
-        <EmployeeList employeeList={employees} />
+        <EmployeeList employeeList={employees} onToggleActive={handleToggleActive} />
       )}
     </div>
   );
