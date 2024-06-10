@@ -1,4 +1,4 @@
-import  { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import EmployeeList from './components/EmployeeList';
 import EmployeeListModel from './models/EmployeeListModel';
@@ -46,13 +46,7 @@ const App = () => {
         <Routes>
           <Route
             path="/"
-            element={
-              loading ? (
-                <Loader />
-              ) : (
-                <EmployeeList employeeList={employees} onToggleActive={handleToggleActive} />
-              )
-            }
+            element={loading ? <Loader /> : <EmployeeList employeeList={employees} onToggleActive={handleToggleActive} />}
           />
           <Route path="/add" element={<AddNewEmployee />} />
         </Routes>
