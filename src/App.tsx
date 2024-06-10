@@ -1,8 +1,10 @@
-import { useState, useEffect } from 'react';
+import  { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import EmployeeList from './components/EmployeeList';
 import EmployeeListModel from './models/EmployeeListModel';
 import Navbar from './components/Navbar';
 import Loader from './components/Loader';
+import AddNewEmployee from './components/AddNewEmployee';
 
 const App = () => {
   const [employees, setEmployees] = useState<EmployeeListModel[]>([]);
@@ -38,14 +40,24 @@ const App = () => {
   };
 
   return (
-    <div>
-      <Navbar />
-      {loading ? (
-        <Loader />
-      ) : (
-        <EmployeeList employeeList={employees} onToggleActive={handleToggleActive} />
-      )}
-    </div>
+    <Router>
+      <div>
+        <Navbar />
+        <Routes>
+          <Route
+            path="/"
+            element={
+              loading ? (
+                <Loader />
+              ) : (
+                <EmployeeList employeeList={employees} onToggleActive={handleToggleActive} />
+              )
+            }
+          />
+          <Route path="/add" element={<AddNewEmployee />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
