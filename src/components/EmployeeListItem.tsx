@@ -12,18 +12,18 @@ interface EmployeeListItemProps {
 
 const EmployeeListItem = ({ id, firstName, lastName, project, city, isActive, onToggleActive }: EmployeeListItemProps) => {
   return (
-    <li className="flex justify-between items-center p-4 bg-white shadow rounded-lg mb-4">
-      <div className="flex flex-col">
+    <li className="flex justify-between items-center p-4 bg-[#A5D7E8] shadow rounded-lg mb-4 max-w-3xl mx-auto">
+      <div className="flex flex-col space-y-1">
         <p className="text-lg font-semibold text-gray-900">{`${firstName} ${lastName}`}</p>
         <p className="text-sm text-gray-500">{project}</p>
         <p className="text-sm text-gray-500">{city}</p>
       </div>
-      <div className="flex items-center">
+      <div className="flex items-center ml-4">
         <Switch
           checked={isActive}
           onChange={() => onToggleActive(id, !isActive)}
-          className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors duration-200 ease-in-out ${
-            isActive ? 'bg-emerald-500' : 'bg-gray-200'
+          className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors duration-200 ease-in-out ${
+            isActive ? 'bg-[#0B2447]' : 'bg-gray-300'
           }`}
         >
           <span

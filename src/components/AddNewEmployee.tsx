@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-
 export default function AddNewEmployee() {
   const [formData, setFormData] = useState({
     firstName: '',
@@ -9,6 +8,12 @@ export default function AddNewEmployee() {
     city: '',
     project: '',
     isActive: 'Yes',
+  });
+
+  const [errors, setErrors] = useState({
+    firstName: false,
+    city: false,
+    project: false,
   });
 
   const navigate = useNavigate();
@@ -21,28 +26,38 @@ export default function AddNewEmployee() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch('https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          firstName: formData.firstName,
-          lastName: formData.lastName,
-          city: formData.city,
-          project: formData.project,
-          isActive: formData.isActive === 'Yes',
-        }),
-      });
+    const newErrors = {
+      firstName: !formData.firstName,
+      city: !formData.city,
+      project: !formData.project,
+    };
 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
+    setErrors(newErrors);
+
+    if (!newErrors.firstName && !newErrors.city && !newErrors.project) {
+      try {
+        const response = await fetch('https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            firstName: formData.firstName,
+            lastName: formData.lastName,
+            city: formData.city,
+            project: formData.project,
+            isActive: formData.isActive === 'Yes',
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        navigate('/');
+      } catch (error) {
+        console.error('Error saving the employee data', error);
       }
-
-      navigate('/');
-    } catch (error) {
-      console.error('Error saving the employee data', error);
     }
   };
 
@@ -68,8 +83,9 @@ export default function AddNewEmployee() {
                   value={formData.firstName}
                   onChange={handleChange}
                   autoComplete="given-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ${errors.firstName ? 'ring-red-500' : 'ring-gray-300'} placeholder:text-gray-400 focus:ring-2 focus:ring-inset ${errors.firstName ? 'focus:ring-red-500' : 'focus:ring-indigo-600'} sm:text-sm sm:leading-6`}
                 />
+                {errors.firstName && <p className="text-red-500 text-xs mt-1">First name is required</p>}
               </div>
             </div>
 
@@ -102,8 +118,9 @@ export default function AddNewEmployee() {
                   value={formData.city}
                   onChange={handleChange}
                   autoComplete="address-level2"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ${errors.city ? 'ring-red-500' : 'ring-gray-300'} placeholder:text-gray-400 focus:ring-2 focus:ring-inset ${errors.city ? 'focus:ring-red-500' : 'focus:ring-indigo-600'} sm:text-sm sm:leading-6`}
                 />
+                {errors.city && <p className="text-red-500 text-xs mt-1">City is required</p>}
               </div>
             </div>
 
@@ -119,8 +136,9 @@ export default function AddNewEmployee() {
                   value={formData.project}
                   onChange={handleChange}
                   autoComplete="project-name"
-                  className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  className={`block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ${errors.project ? 'ring-red-500' : 'ring-gray-300'} placeholder:text-gray-400 focus:ring-2 focus:ring-inset ${errors.project ? 'focus:ring-red-500' : 'focus:ring-indigo-600'} sm:text-sm sm:leading-6`}
                 />
+                {errors.project && <p className="text-red-500 text-xs mt-1">Project is required</p>}
               </div>
             </div>
 
