@@ -1,5 +1,5 @@
 import { Switch } from "@headlessui/react";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 interface EmployeeListItemProps {
   id: string;
@@ -34,21 +34,11 @@ const EmployeeListItem = ({
         <p className="text-sm text-gray-500">{city}</p>
       </div>
       <div className="absolute top-0 right-0 m-2">
-        <button onClick={handleEditClick} className="text-sm font-medium text-gray-900">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            className="w-5 h-5"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M12 4v16m8-8H4"
-            />
-          </svg>
+        <button
+          onClick={handleEditClick}
+          className="text-sm font-medium text-gray-900"
+        >
+          Edit
         </button>
       </div>
       <div className="flex items-center space-x-4">
@@ -71,4 +61,3 @@ const EmployeeListItem = ({
 };
 
 export default EmployeeListItem;
-
