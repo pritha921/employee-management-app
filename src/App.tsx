@@ -5,6 +5,7 @@ import EmployeeListModel from './models/EmployeeListModel';
 import Navbar from './components/Navbar';
 import Loader from './components/Loader';
 import AddNewEmployee from './components/AddNewEmployee';
+import EditEmployee from './components/editEmployee' 
 
 const App = () => {
   const [employees, setEmployees] = useState<EmployeeListModel[]>([]);
@@ -49,6 +50,7 @@ const App = () => {
             element={loading ? <Loader /> : <EmployeeList employeeList={employees} onToggleActive={handleToggleActive} />}
           />
           <Route path="/add" element={<AddNewEmployee />} />
+          <Route path="/edit/:id" element={<EditEmployee />} />
         </Routes>
       </div>
     </Router>
@@ -56,3 +58,4 @@ const App = () => {
 };
 
 export default App;
+
