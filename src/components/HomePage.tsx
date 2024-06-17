@@ -52,6 +52,18 @@ const HomePage = () => {
     }
   };
 
+  const handleDeleteEmployee = async (id: string) => {
+    try {
+      await fetch(`https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`, {
+        method: 'DELETE',
+      });
+
+      setEmployees((prevEmployees) => prevEmployees.filter((employee) => employee.id !== id));
+    } catch (error) {
+      console.error('Error deleting the employee', error);
+    }
+  };
+
   return (
     <div>
       {loading ? (
@@ -60,6 +72,7 @@ const HomePage = () => {
         <EmployeeList
           employeeList={employees}
           onToggleActive={handleToggleActive}
+          onDelete={handleDeleteEmployee}
         />
       )}
     </div>

@@ -9,6 +9,7 @@ interface EmployeeListItemProps {
   city: string;
   isActive: boolean;
   onToggleActive: (id: string, isActive: boolean) => void;
+  onDelete: (id: string) => void;
 }
 
 const EmployeeListItem = ({
@@ -19,11 +20,16 @@ const EmployeeListItem = ({
   city,
   isActive,
   onToggleActive,
+  onDelete,
 }: EmployeeListItemProps) => {
   const navigate = useNavigate();
 
   const handleEditClick = () => {
     navigate(`/edit/${id}`);
+  };
+
+  const handleDeleteClick = () => {
+    onDelete(id);
   };
 
   return (
@@ -39,6 +45,12 @@ const EmployeeListItem = ({
           className="text-sm font-medium text-gray-900"
         >
           Edit
+        </button>
+        <button
+          onClick={handleDeleteClick}
+          className="text-sm font-medium text-red-600"
+        >
+          Delete
         </button>
       </div>
       <div className="flex items-center space-x-4">
