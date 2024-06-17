@@ -1,5 +1,7 @@
+import { useState } from "react";
 import { Switch } from "@headlessui/react";
 import { useNavigate } from "react-router-dom";
+import ConfirmationModal from "./ConfirmationModal";
 
 interface EmployeeListItemProps {
   id: string;
@@ -22,6 +24,7 @@ const EmployeeListItem = ({
   onToggleActive,
   onDelete,
 }: EmployeeListItemProps) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleEditClick = () => {
@@ -29,7 +32,16 @@ const EmployeeListItem = ({
   };
 
   const handleDeleteClick = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleConfirmDelete = () => {
     onDelete(id);
+    setIsModalOpen(false);
   };
 
   return (
@@ -39,7 +51,7 @@ const EmployeeListItem = ({
         <p className="text-sm text-gray-500">{project}</p>
         <p className="text-sm text-gray-500">{city}</p>
       </div>
-      <div className="absolute top-0 right-0 m-2">
+      <div className="absolute top-0 right-0 m-2 space-x-2">
         <button
           onClick={handleEditClick}
           className="text-sm font-medium text-gray-900"
@@ -68,6 +80,12 @@ const EmployeeListItem = ({
           />
         </Switch>
       </div>
+      <ConfirmationModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        onConfirm={handleConfirmDelete}
+        message="Are you sure you want to delete this employee?"
+      />
     </li>
   );
 };

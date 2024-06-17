@@ -1,13 +1,13 @@
 import EmployeeListItem from './EmployeeListItem';
 import EmployeeListModel from '../models/EmployeeListModel';
 
-interface ExpenseListProps {
+interface EmployeeListProps {
   employeeList: EmployeeListModel[];
   onToggleActive: (id: string, isActive: boolean) => void;
   onDelete: (id: string) => void;
 }
 
-const EmployeeList = ({ employeeList, onToggleActive,onDelete }: ExpenseListProps) => {
+const EmployeeList = ({ employeeList, onToggleActive, onDelete }: EmployeeListProps) => {
   return (
     <div className="p-4 bg-[#0B2447]">
       <h2 className="text-2xl font-bold mb-6 text-center text-white">Employee List</h2>
@@ -31,3 +31,4 @@ const EmployeeList = ({ employeeList, onToggleActive,onDelete }: ExpenseListProp
 };
 
 export default EmployeeList;
+
