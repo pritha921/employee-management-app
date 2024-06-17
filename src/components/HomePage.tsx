@@ -1,12 +1,9 @@
-import { useState, useEffect } from "react";
-
+import { useEffect, useState } from "react";
 import EmployeeList from "./EmployeeList";
 import EmployeeListModel from "../models/EmployeeListModel";
-import Loader from "./Loader";
 
 const HomePage = () => {
-  const [employees, setEmployees] = useState<EmployeeListModel[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [employeeList, setEmployeeList] = useState<EmployeeListModel[]>([]);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -17,36 +14,48 @@ const HomePage = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data: EmployeeListModel[] = await response.json();
-        setEmployees(data);
-        setLoading(false);
+        const data = await response.json();
+        setEmployeeList(data);
       } catch (error) {
-        console.error("Error fetching the employees data", error);
-        setLoading(false);
+        console.error("Error fetching employees:", error);
       }
     };
 
     fetchEmployees();
   }, []);
 
-  const handleToggleActive = (id: string, isActive: boolean) => {
-    setEmployees((prevEmployees) =>
-      prevEmployees.map((employee) =>
-        employee.id === id ? { ...employee, isActive } : employee
-      )
-    );
+  const handleToggleActive = async (id: string, isActive: boolean) => {
+    try {
+      const response = await fetch(
+        `https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ isActive }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      setEmployeeList((prevList) =>
+        prevList.map((employee) =>
+          employee.id === id ? { ...employee, isActive } : employee
+        )
+      );
+    } catch (error) {
+      console.error("Error updating employee status:", error);
+    }
   };
+
   return (
-    <div>
-      {loading ? (
-        <Loader />
-      ) : (
-        <EmployeeList
-          employeeList={employees}
-          onToggleActive={handleToggleActive}
-        />
-      )}
-    </div>
+    <EmployeeList
+      employeeList={employeeList}
+      onToggleActive={handleToggleActive}
+    />
   );
 };
 
