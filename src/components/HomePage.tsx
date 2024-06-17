@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState, useEffect } from "react";
 import EmployeeList from "./EmployeeList";
 import EmployeeListModel from "../models/EmployeeListModel";
+import Loader from "./Loader";
 
 const HomePage = () => {
-  const [employeeList, setEmployeeList] = useState<EmployeeListModel[]>([]);
+  const [employees, setEmployees] = useState<EmployeeListModel[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -14,10 +16,12 @@ const HomePage = () => {
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.json();
-        setEmployeeList(data);
+        const data: EmployeeListModel[] = await response.json();
+        setEmployees(data);
+        setLoading(false);
       } catch (error) {
-        console.error("Error fetching employees:", error);
+        console.error("Error fetching the employees data", error);
+        setLoading(false);
       }
     };
 
@@ -26,36 +30,39 @@ const HomePage = () => {
 
   const handleToggleActive = async (id: string, isActive: boolean) => {
     try {
-      const response = await fetch(
-        `https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ isActive }),
-        }
-      );
+      const response = await fetch(`https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ isActive }),
+      });
 
       if (!response.ok) {
-        throw new Error("Network response was not ok");
+        throw new Error('Network response was not ok');
       }
 
-      setEmployeeList((prevList) =>
-        prevList.map((employee) =>
+      setEmployees((prevEmployees) =>
+        prevEmployees.map((employee) =>
           employee.id === id ? { ...employee, isActive } : employee
         )
       );
     } catch (error) {
-      console.error("Error updating employee status:", error);
+      console.error('Error updating employee status:', error);
     }
   };
 
   return (
-    <EmployeeList
-      employeeList={employeeList}
-      onToggleActive={handleToggleActive}
-    />
+    <div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <EmployeeList
+          employeeList={employees}
+          onToggleActive={handleToggleActive}
+        />
+      )}
+    </div>
   );
 };
 

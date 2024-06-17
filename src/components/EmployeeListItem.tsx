@@ -23,7 +23,7 @@ const EmployeeListItem = ({
   const navigate = useNavigate();
 
   const handleEditClick = () => {
-    navigate(`/edit-employee/${id}`);
+    navigate(`/edit/${id}`);
   };
 
   return (
