@@ -31,13 +31,16 @@ const HomePage = () => {
 
   const handleToggleActive = async (id: string, isActive: boolean) => {
     try {
-      await fetch(`https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ isActive }),
-      });
+      await fetch(
+        `https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ isActive }),
+        }
+      );
 
       setEmployees((prevEmployees) =>
         prevEmployees.map((employee) =>
@@ -45,19 +48,24 @@ const HomePage = () => {
         )
       );
     } catch (error) {
-      console.error('Error updating the employee data', error);
+      console.error("Error updating the employee data", error);
     }
   };
 
   const handleDeleteEmployee = async (id: string) => {
     try {
-      await fetch(`https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`, {
-        method: 'DELETE',
-      });
+      await fetch(
+        `https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`,
+        {
+          method: "DELETE",
+        }
+      );
 
-      setEmployees((prevEmployees) => prevEmployees.filter((employee) => employee.id !== id));
+      setEmployees((prevEmployees) =>
+        prevEmployees.filter((employee) => employee.id !== id)
+      );
     } catch (error) {
-      console.error('Error deleting the employee', error);
+      console.error("Error deleting the employee", error);
     }
   };
 
@@ -77,4 +85,3 @@ const HomePage = () => {
 };
 
 export default HomePage;
-

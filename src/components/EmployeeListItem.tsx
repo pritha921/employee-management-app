@@ -46,7 +46,7 @@ const EmployeeListItem = ({
 
   return (
     <li className="relative flex justify-between items-center p-4 bg-[#A5D7E8] shadow rounded-lg mb-4 max-w-3xl mx-auto">
-      <div className="flex flex-col space-y-1">
+      <div className="flex flex-col space-y-1 w-1/3">
         <p className="text-lg font-semibold text-gray-900">{`${firstName} ${lastName}`}</p>
         <p className="text-sm text-gray-500">{project}</p>
         <p className="text-sm text-gray-500">{city}</p>
@@ -60,7 +60,7 @@ const EmployeeListItem = ({
         </button>
         <button
           onClick={handleDeleteClick}
-          className="text-sm font-medium text-red-600"
+          className="text-sm font-medium text-[#C80036]"
         >
           Delete
         </button>
@@ -70,7 +70,7 @@ const EmployeeListItem = ({
           checked={isActive}
           onChange={() => onToggleActive(id, !isActive)}
           className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors duration-200 ease-in-out ${
-            isActive ? "bg-[#0B2447]" : "bg-gray-300"
+            isActive ? "bg-[#0B2447]" : "bg-[#C80036]"
           }`}
         >
           <span
@@ -91,3 +91,5 @@ const EmployeeListItem = ({
 };
 
 export default EmployeeListItem;
+
+
