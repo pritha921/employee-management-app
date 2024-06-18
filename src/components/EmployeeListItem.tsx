@@ -67,7 +67,7 @@ const EmployeeListItem = ({
             />
           </Switch>
         </div>
-        <div className="flex flex-col items-center space-y-2">
+        <div className="flex flex-row items-center ">
           <button
             onClick={handleEditClick}
             className="text-sm font-medium text-gray-900"
