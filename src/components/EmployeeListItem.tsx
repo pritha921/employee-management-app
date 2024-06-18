@@ -57,7 +57,7 @@ const EmployeeListItem = ({
             checked={isActive}
             onChange={() => onToggleActive(id, !isActive)}
             className={`relative inline-flex h-5 w-10 items-center rounded-full transition-colors duration-200 ease-in-out ${
-              isActive ? "bg-[#0B2447]" : "bg-[#C80036]"
+              isActive ? "bg-[#0A6847]" : "bg-[#C80036]"
             }`}
           >
             <span
