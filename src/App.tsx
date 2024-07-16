@@ -2,9 +2,12 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Navbar from "./components/Navbar";
 import HomePage from "./components/HomePage";
 import EmployeeForm from "./components/EmployeeForm";
+import { ApiFetchProvider } from './models/ApiFetchContext';
 
 const App = () => {
   return (
+    
+    <ApiFetchProvider>
     <Router>
       <div>
         <Navbar />
@@ -15,6 +18,7 @@ const App = () => {
         </Routes>
       </div>
     </Router>
+    </ApiFetchProvider>
   );
 };
 
