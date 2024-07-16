@@ -7,27 +7,32 @@ import Loader from "./Loader";
 const HomePage = () => {
   const [employees, setEmployees] = useState<EmployeeListModel[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [apiFetch, setApiFetch] = useState<boolean>(true);
 
   useEffect(() => {
-    const fetchEmployees = async () => {
-      try {
-        const response = await fetch(
-          "https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users"
-        );
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+    if (apiFetch) {
+      const fetchEmployees = async () => {
+        try {
+          const response = await fetch(
+            "https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users"
+          );
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          const data: EmployeeListModel[] = await response.json();
+          setEmployees(data);
+          setLoading(false);
+          setApiFetch(false);
+        } catch (error) {
+          console.error("Error fetching the employees data", error);
+          setLoading(false);
+          setApiFetch(false);
         }
-        const data: EmployeeListModel[] = await response.json();
-        setEmployees(data);
-        setLoading(false);
-      } catch (error) {
-        console.error("Error fetching the employees data", error);
-        setLoading(false);
-      }
-    };
+      };
 
-    fetchEmployees();
-  }, []);
+      fetchEmployees();
+    }
+  }, [apiFetch]);
 
   const handleToggleActive = async (id: string, isActive: boolean) => {
     try {
