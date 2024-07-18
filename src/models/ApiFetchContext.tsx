@@ -1,14 +1,14 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-interface ApiFetchContextType {
+interface ApiFetchContextProps {
   apiFetch: boolean;
   setApiFetch: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ApiFetchContext = createContext<ApiFetchContextType | undefined>(undefined);
+const ApiFetchContext = createContext<ApiFetchContextProps | undefined>(undefined);
 
-export const ApiFetchProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [apiFetch, setApiFetch] = useState<boolean>(true);
+export const ApiFetchProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [apiFetch, setApiFetch] = useState<boolean>(false);
 
   return (
     <ApiFetchContext.Provider value={{ apiFetch, setApiFetch }}>
@@ -20,7 +20,7 @@ export const ApiFetchProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 // eslint-disable-next-line react-refresh/only-export-components
 export const useApiFetch = () => {
   const context = useContext(ApiFetchContext);
-  if (!context) {
+  if (context === undefined) {
     throw new Error('useApiFetch must be used within an ApiFetchProvider');
   }
   return context;
