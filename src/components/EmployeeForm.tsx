@@ -82,17 +82,17 @@ const EmployeeForm = ({ mode }: EmployeeFormProps) => {
         throw new Error("Network response was not ok");
       }
 
+      setApiFetch(true); // Set this to true only when a successful submit occurs
       navigate("/");
-      setApiFetch(true);
     } catch (error) {
       console.error("Error saving the employee data", error);
     }
   };
 
   const handleCancel = () => {
+    setApiFetch(false); // Ensure we don't trigger an API fetch when cancelling
     navigate("/");
   };
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#0B2447]">
       <form

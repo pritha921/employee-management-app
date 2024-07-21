@@ -25,15 +25,16 @@ const HomePage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    fetchEmployees();
-  }, [fetchEmployees]);
-
-  useEffect(() => {
     if (apiFetch) {
       fetchEmployees();
       setApiFetch(false);
     }
   }, [apiFetch, fetchEmployees, setApiFetch]);
+
+  useEffect(() => {
+    // Fetch on initial render
+    fetchEmployees();
+  }, [fetchEmployees]);
 
   const handleToggleActive = async (id: string, isActive: boolean) => {
     try {
