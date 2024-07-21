@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import EmployeeList from "./EmployeeList";
 import EmployeeListModel from "../models/EmployeeListModel";
 import Loader from "./Loader";
@@ -6,30 +6,23 @@ import useApiFetch from "../hooks/apiFetchHook";
 
 const HomePage: React.FC = () => {
   const [employees, setEmployees] = useState<EmployeeListModel[]>([]);
-  const { apiFetch, setApiFetch, cancelled } = useApiFetch();
+  const { apiFetch, setApiFetch } = useApiFetch();
   const [loading, setLoading] = useState<boolean>(true);
 
   const fetchEmployees = useCallback(async () => {
-    if (cancelled) return;
     setLoading(true);
     try {
-      const response = await fetch(
-        "https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users"
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      const response = await fetch("https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users");
+      if (!response.ok) throw new Error("Network response was not ok");
+
       const data: EmployeeListModel[] = await response.json();
-      if (cancelled) return;
       setEmployees(data);
     } catch (error) {
-      if (!cancelled) {
-        console.error("Error fetching the employees data", error);
-      }
+      console.error("Error fetching the employees data", error);
     } finally {
       setLoading(false);
     }
-  }, [cancelled]);
+  }, []);
 
   useEffect(() => {
     fetchEmployees();
@@ -43,7 +36,6 @@ const HomePage: React.FC = () => {
   }, [apiFetch, fetchEmployees, setApiFetch]);
 
   const handleToggleActive = async (id: string, isActive: boolean) => {
-    if (cancelled) return;
     try {
       await fetch(
         `https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`,
@@ -62,14 +54,11 @@ const HomePage: React.FC = () => {
         )
       );
     } catch (error) {
-      if (!cancelled) {
-        console.error("Error updating the employee data", error);
-      }
+      console.error("Error updating the employee data", error);
     }
   };
 
   const handleDeleteEmployee = async (id: string) => {
-    if (cancelled) return;
     try {
       await fetch(
         `https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`,
@@ -82,9 +71,7 @@ const HomePage: React.FC = () => {
         prevEmployees.filter((employee) => employee.id !== id)
       );
     } catch (error) {
-      if (!cancelled) {
-        console.error("Error deleting the employee", error);
-      }
+      console.error("Error deleting the employee", error);
     }
   };
 
@@ -104,3 +91,5 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+
+

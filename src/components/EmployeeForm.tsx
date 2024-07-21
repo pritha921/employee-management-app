@@ -33,12 +33,11 @@ const EmployeeForm = ({ mode }: EmployeeFormProps) => {
       isActive: "Yes",
     },
   });
-  const { cancelled, setCancelled } = useApiFetch();
+  const { setApiFetch } = useApiFetch();
 
   useEffect(() => {
     if (mode === "edit" && id) {
       const fetchEmployee = async () => {
-        if (cancelled) return;
         try {
           const response = await fetch(
             `https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`
@@ -47,25 +46,20 @@ const EmployeeForm = ({ mode }: EmployeeFormProps) => {
             throw new Error("Network response was not ok");
           }
           const data = await response.json();
-          if (cancelled) return;
           setValue("firstName", data.firstName);
           setValue("lastName", data.lastName);
           setValue("city", data.city);
           setValue("project", data.project);
           setValue("isActive", data.isActive ? "Yes" : "No");
         } catch (error) {
-          if (!cancelled) {
-            console.error("Error fetching the employee data", error);
-          }
+          console.error("Error fetching the employee data", error);
         }
       };
       fetchEmployee();
     }
-  }, [mode, id, setValue, cancelled]);
+  }, [mode, id, setValue]);
 
   const onSubmit = async (formData: FormData) => {
-    if (cancelled) return;
-
     const url =
       mode === "add"
         ? "https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users"
@@ -89,22 +83,15 @@ const EmployeeForm = ({ mode }: EmployeeFormProps) => {
       }
 
       navigate("/");
+      setApiFetch(true);
     } catch (error) {
-      if (!cancelled) {
-        console.error("Error saving the employee data", error);
-      }
+      console.error("Error saving the employee data", error);
     }
   };
 
   const handleCancel = () => {
-    setCancelled(true);
     navigate("/");
   };
-
-  useEffect(() => {
-    // Reset cancelled state on mount
-    return () => setCancelled(false);
-  }, [setCancelled]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-[#0B2447]">
