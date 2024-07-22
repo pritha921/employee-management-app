@@ -12,7 +12,9 @@ const HomePage: React.FC = () => {
   const fetchEmployees = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch("https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users");
+      const response = await fetch(
+        "https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users"
+      );
       if (!response.ok) throw new Error("Network response was not ok");
 
       const data: EmployeeListModel[] = await response.json();
@@ -32,7 +34,6 @@ const HomePage: React.FC = () => {
   }, [apiFetch, fetchEmployees, setApiFetch]);
 
   useEffect(() => {
-    // Fetch on initial render
     fetchEmployees();
   }, [fetchEmployees]);
 
@@ -92,5 +93,3 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
-
-

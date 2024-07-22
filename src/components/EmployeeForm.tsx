@@ -82,7 +82,7 @@ const EmployeeForm = ({ mode }: EmployeeFormProps) => {
         throw new Error("Network response was not ok");
       }
 
-      setApiFetch(true); // Set this to true only when a successful submit occurs
+      setApiFetch(true); 
       navigate("/");
     } catch (error) {
       console.error("Error saving the employee data", error);
@@ -90,7 +90,7 @@ const EmployeeForm = ({ mode }: EmployeeFormProps) => {
   };
 
   const handleCancel = () => {
-    setApiFetch(false); // Ensure we don't trigger an API fetch when cancelling
+    setApiFetch(false); 
     navigate("/");
   };
   return (
