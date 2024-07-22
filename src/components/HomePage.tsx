@@ -5,7 +5,7 @@ import useApiFetch from "../hooks/apiFetchHook";
 import { useEmployees } from "../models/EmployeeContext";
 const HomePage: React.FC = () => {
   const { employees, setEmployees } = useEmployees();
-  const { apiFetch, setApiFetch, isInitial, setIsInitial } = useApiFetch();
+  const { apiFetch, setApiFetch } = useApiFetch();
   const [loading, setLoading] = React.useState(true);
 
   const fetchEmployees = useCallback(async () => {
@@ -26,14 +26,13 @@ const HomePage: React.FC = () => {
   }, [setEmployees]);
 
   useEffect(() => {
-    if (isInitial || apiFetch) {
+    if (apiFetch) {
       fetchEmployees();
       setApiFetch(false);
-      setIsInitial(false);
     } else {
       setLoading(false);
     }
-  }, [isInitial, apiFetch, fetchEmployees, setApiFetch, setIsInitial]);
+  }, [apiFetch, fetchEmployees, setApiFetch]);
 
   const handleToggleActive = async (id: string, isActive: boolean) => {
     try {

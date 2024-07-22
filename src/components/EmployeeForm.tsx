@@ -59,11 +59,7 @@ const EmployeeForm = ({ mode }: EmployeeFormProps) => {
     }
   }, [mode, id, setValue]);
 
-
-
   const onSubmit = async (formData: FormData) => {
-    
-
     const url =
       mode === "add"
         ? "https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users"
@@ -86,18 +82,14 @@ const EmployeeForm = ({ mode }: EmployeeFormProps) => {
         throw new Error("Network response was not ok");
       }
 
-      setApiFetch(true); 
+      setApiFetch(true);
       navigate("/");
     } catch (error) {
-    
-        console.error("Error saving the employee data", error);
-  
+      console.error("Error saving the employee data", error);
     }
   };
 
   const handleCancel = () => {
-    
-    setApiFetch(false);
     navigate("/");
   };
 
