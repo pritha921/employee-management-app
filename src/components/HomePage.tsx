@@ -1,13 +1,12 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useCallback } from "react";
 import EmployeeList from "./EmployeeList";
-import EmployeeListModel from "../models/EmployeeListModel";
 import Loader from "./Loader";
 import useApiFetch from "../hooks/apiFetchHook";
-
+import { useEmployees } from "../models/EmployeeContext";
 const HomePage: React.FC = () => {
-  const [employees, setEmployees] = useState<EmployeeListModel[]>([]);
-  const { apiFetch, setApiFetch } = useApiFetch();
-  const [loading, setLoading] = useState<boolean>(true);
+  const { employees, setEmployees } = useEmployees();
+  const { apiFetch, setApiFetch, isInitial, setIsInitial } = useApiFetch();
+  const [loading, setLoading] = React.useState(true);
 
   const fetchEmployees = useCallback(async () => {
     setLoading(true);
@@ -17,25 +16,24 @@ const HomePage: React.FC = () => {
       );
       if (!response.ok) throw new Error("Network response was not ok");
 
-      const data: EmployeeListModel[] = await response.json();
+      const data = await response.json();
       setEmployees(data);
     } catch (error) {
       console.error("Error fetching the employees data", error);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [setEmployees]);
 
   useEffect(() => {
-    if (apiFetch) {
+    if (isInitial || apiFetch) {
       fetchEmployees();
       setApiFetch(false);
+      setIsInitial(false);
+    } else {
+      setLoading(false);
     }
-  }, [apiFetch, fetchEmployees, setApiFetch]);
-
-  useEffect(() => {
-    fetchEmployees();
-  }, [fetchEmployees]);
+  }, [isInitial, apiFetch, fetchEmployees, setApiFetch, setIsInitial]);
 
   const handleToggleActive = async (id: string, isActive: boolean) => {
     try {
