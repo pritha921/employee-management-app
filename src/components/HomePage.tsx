@@ -40,17 +40,19 @@ const HomePage: React.FC = () => {
       if (!document.hidden) {
         const currentTime = Date.now();
         const timeDifference = currentTime - lastVisibleTime;
+       
 
         if (timeDifference > 300000) {
           setApiFetch(true);
-          fetchEmployees();
         }
 
         setLastVisibleTime(currentTime);
+        
       }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
+    console.log("Checking")
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
