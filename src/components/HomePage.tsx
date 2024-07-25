@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, { useEffect, useCallback, useRef } from "react";
 import EmployeeList from "./EmployeeList";
 import Loader from "./Loader";
 import useApiFetch from "../hooks/apiFetchHook";
@@ -7,7 +7,6 @@ const HomePage: React.FC = () => {
   const { employees, setEmployees } = useEmployees();
   const { apiFetch, setApiFetch } = useApiFetch();
   const [loading, setLoading] = React.useState(true);
-  const [lastVisibleTime, setLastVisibleTime] = useState(Date.now());
 
   const fetchEmployees = useCallback(async () => {
     setLoading(true);
@@ -35,29 +34,28 @@ const HomePage: React.FC = () => {
     }
   }, [apiFetch, fetchEmployees, setApiFetch]);
 
+  const lastVisibleTimeRef = useRef(Date.now());
+
   useEffect(() => {
     const handleVisibilityChange = () => {
       if (!document.hidden) {
         const currentTime = Date.now();
-        const timeDifference = currentTime - lastVisibleTime;
-       
+        const timeDifference = currentTime - lastVisibleTimeRef.current;
 
         if (timeDifference > 300000) {
-          setApiFetch(true);
+          fetchEmployees();
         }
 
-        setLastVisibleTime(currentTime);
-        
+        lastVisibleTimeRef.current = currentTime;
       }
     };
 
     document.addEventListener("visibilitychange", handleVisibilityChange);
-    console.log("Checking")
 
     return () => {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
-  }, [fetchEmployees, setApiFetch, lastVisibleTime]);
+  }, [fetchEmployees]);
 
   const handleToggleActive = async (id: string, isActive: boolean) => {
     try {
