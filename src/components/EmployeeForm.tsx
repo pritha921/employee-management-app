@@ -240,11 +240,10 @@
 
 // export default EmployeeForm;
 
+import React, { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { useEffect } from "react";
 import { useForm, Controller } from "react-hook-form";
-// import useApiFetch from "../hooks/apiFetchHook";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
 interface FormData {
   firstName: string;
@@ -258,7 +257,7 @@ interface EmployeeFormProps {
   mode: "add" | "edit";
 }
 
-const EmployeeForm = ({ mode }: EmployeeFormProps) => {
+const EmployeeForm: React.FC<EmployeeFormProps> = ({ mode }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -279,6 +278,71 @@ const EmployeeForm = ({ mode }: EmployeeFormProps) => {
     },
   });
 
+  const addEmployee = async (formData: FormData) => {
+    const response = await fetch(
+      "https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          isActive: formData.isActive === "Yes",
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return response.json();
+  };
+
+  const editEmployee = async (formData: FormData) => {
+    const response = await fetch(
+      `https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          isActive: formData.isActive === "Yes",
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Network response was not ok");
+    }
+
+    return response.json();
+  };
+
+  const addMutation = useMutation({
+    mutationFn: addEmployee,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+      navigate("/");
+    },
+    onError: (error) => {
+      console.error("Error adding the employee", error);
+    },
+  });
+
+  const editMutation = useMutation({
+    mutationFn: editEmployee,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["employees"] });
+      navigate("/");
+    },
+    onError: (error) => {
+      console.error("Error editing the employee", error);
+    },
+  });
 
   useEffect(() => {
     if (mode === "edit" && id) {
@@ -304,33 +368,11 @@ const EmployeeForm = ({ mode }: EmployeeFormProps) => {
     }
   }, [mode, id, setValue]);
 
-  const onSubmit = async (formData: FormData) => {
-    const url =
-      mode === "add"
-        ? "https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users"
-        : `https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users/${id}`;
-    const method = mode === "add" ? "POST" : "PUT";
-
-    try {
-      const response = await fetch(url, {
-        method: method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          isActive: formData.isActive === "Yes",
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      queryClient.invalidateQueries({ queryKey: ["employees"] });
-      navigate("/");
-    } catch (error) {
-      console.error("Error saving the employee data", error);
+  const onSubmit = (formData: FormData) => {
+    if (mode === "add") {
+      addMutation.mutate(formData);
+    } else {
+      editMutation.mutate(formData);
     }
   };
 

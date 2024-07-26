@@ -114,31 +114,33 @@
 
 // export default HomePage;
 
-
-
 import React, { useEffect, useRef } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import EmployeeList from "./EmployeeList";
 import Loader from "./Loader";
 import { useEmployees } from "../models/EmployeeContext";
-import EmployeeListModel from "../models/EmployeeListModel";  
+import EmployeeListModel from "../models/EmployeeListModel";
 
 const fetchEmployees = async (): Promise<EmployeeListModel[]> => {
   const response = await fetch(
     "https://664207cf3d66a67b3435e466.mockapi.io/api/v1/users"
   );
   if (!response.ok) throw new Error("Network response was not ok");
-  return response.json();  
+  return response.json();
 };
 
 const HomePage: React.FC = () => {
   const { setEmployees } = useEmployees();
   const queryClient = useQueryClient();
 
-  const { data: employees, isLoading, error } = useQuery({
-    queryKey: ['employees'],
+  const {
+    data: employees,
+    isLoading,
+    error,
+  } = useQuery({
+    queryKey: ["employees"],
     queryFn: fetchEmployees,
-    staleTime: 300000, 
+    staleTime: 300000,
   });
 
   useEffect(() => {
@@ -156,7 +158,7 @@ const HomePage: React.FC = () => {
         const timeDifference = currentTime - lastVisibleTimeRef.current;
 
         if (timeDifference > 300000) {
-          queryClient.invalidateQueries({ queryKey: ['employees'] });
+          queryClient.invalidateQueries({ queryKey: ["employees"] });
         }
 
         lastVisibleTimeRef.current = currentTime;
@@ -183,10 +185,12 @@ const HomePage: React.FC = () => {
         }
       );
 
-      queryClient.setQueryData<EmployeeListModel[]>(['employees'], (oldData) =>
-        oldData?.map((employee) =>
-          employee.id === id ? { ...employee, isActive } : employee
-        ) ?? []
+      queryClient.setQueryData<EmployeeListModel[]>(
+        ["employees"],
+        (oldData) =>
+          oldData?.map((employee) =>
+            employee.id === id ? { ...employee, isActive } : employee
+          ) ?? []
       );
     } catch (error) {
       console.error("Error updating the employee data", error);
@@ -202,8 +206,9 @@ const HomePage: React.FC = () => {
         }
       );
 
-      queryClient.setQueryData<EmployeeListModel[]>(['employees'], (oldData) =>
-        oldData?.filter((employee) => employee.id !== id) ?? []
+      queryClient.setQueryData<EmployeeListModel[]>(
+        ["employees"],
+        (oldData) => oldData?.filter((employee) => employee.id !== id) ?? []
       );
     } catch (error) {
       console.error("Error deleting the employee", error);
